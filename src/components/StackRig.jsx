@@ -27,14 +27,18 @@ const StackRig = forwardRef(function StackRig({ accentRgb, onToast }, ref) {
   const [audioMode, setAudioMode] = useState(audioRig.mode);
   const [selectedRiffId, setSelectedRiffId] = useState(RIFFS[0].id);
   const [playingRiffId, setPlayingRiffId] = useState(null);
+  const [bpm, setBpm] = useState(RIFFS[0].bpm);
+  const [beatPulse, setBeatPulse] = useState(false);
   const [activeMidis, setActiveMidis] = useState({});
   const [lcd, setLcd] = useState({
-    cat: 'guitarra · listo',
+    cat: `guitarra · ${RIFFS[0].bpm} BPM original`,
     name: 'tocá una tecla o elegí un riff',
-    desc: '24 tecnologías · 7 riffs de rock argentino e internacional',
+    desc: '24 tecnologías · 7 riffs al tempo original de cada tema',
   });
 
   const demoTimerRef = useRef(null);
+  const bpmRef = useRef(RIFFS[0].bpm);
+  bpmRef.current = bpm;
   const keyTimersRef = useRef({});
   const pointerDownRef = useRef(false);
   const visibleRef = useRef(false);
@@ -93,10 +97,11 @@ const StackRig = forwardRef(function StackRig({ accentRgb, onToast }, ref) {
     clearTimeout(demoTimerRef.current);
     demoTimerRef.current = null;
     setPlayingRiffId(null);
+    setBeatPulse(false);
   }, []);
 
   const playRiff = useCallback(
-    (riffId) => {
+    (riffId, keepCustomBpm = false) => {
       const targetId = riffId || selectedRiffId;
       const riff = RIFFS.find((r) => r.id === targetId) || RIFFS[0];
 
@@ -108,30 +113,45 @@ const StackRig = forwardRef(function StackRig({ accentRgb, onToast }, ref) {
 
       stopRiff();
       setSelectedRiffId(riff.id);
+      if (!keepCustomBpm) {
+        setBpm(riff.bpm);
+        bpmRef.current = riff.bpm;
+      }
       setPlayingRiffId(riff.id);
       if (!audioRig.enabled) audioRig.setEnabled(true);
 
       let i = 0;
+      let nextTime = performance.now();
+
       const next = () => {
         if (i >= riff.steps.length) {
           stopRiff();
           return;
         }
         const [midiOrList, beats] = riff.steps[i++];
-        const durSec = (beats * riff.beatMs) / 1000;
+        const curBpm = bpmRef.current;
+        const beatMs = 60000 / curBpm;
+        const stepMs = beats * beatMs;
+        const durSec = stepMs / 1000;
+
+        setBeatPulse((p) => !p);
         if (midiOrList) {
-          audioRig.note(midiOrList, durSec * 0.95);
+          audioRig.note(midiOrList, Math.max(0.22, durSec * 0.96));
           const list = Array.isArray(midiOrList) ? midiOrList : [midiOrList];
           const primaryVisual = mapMidiToKey(list[list.length - 1]);
-          list.forEach((m) => flashKey(mapMidiToKey(m), Math.max(150, beats * riff.beatMs * 0.85)));
+          list.forEach((m) => flashKey(mapMidiToKey(m), Math.max(130, stepMs * 0.85)));
           const tech = keyByMidi[primaryVisual];
           setLcd({
-            cat: `▶ ${riff.artist} (${riff.origin})`,
+            cat: `▶ ${riff.artist} (${riff.origin}) · ${curBpm} BPM${curBpm === riff.bpm ? ' orig.' : ''}`,
             name: riff.name,
             desc: tech ? `sonando en tecla: ${tech.name}` : riff.artist,
           });
         }
-        demoTimerRef.current = setTimeout(next, beats * riff.beatMs);
+
+        // Programación sin drift para mantener el tempo exacto
+        nextTime += stepMs;
+        const delay = Math.max(10, nextTime - performance.now());
+        demoTimerRef.current = setTimeout(next, delay);
       };
       next();
     },
@@ -312,7 +332,7 @@ const StackRig = forwardRef(function StackRig({ accentRgb, onToast }, ref) {
               </button>
               <button
                 type="button"
-                onClick={() => (playingRiffId ? stopRiff() : playRiff(currentRiff.id))}
+                onClick={() => (playingRiffId ? stopRiff() : playRiff(currentRiff.id, true))}
                 data-cursor="riff"
                 className="btn-sweep inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors"
                 style={
@@ -334,48 +354,86 @@ const StackRig = forwardRef(function StackRig({ accentRgb, onToast }, ref) {
           </div>
         </div>
 
-        {/* Selector de riffs conocidos + rock argentino */}
-        <div className="mb-5 flex flex-wrap items-center gap-2 border-y border-white/10 py-3.5">
-          <span className="mr-1 font-mono text-[11px] uppercase tracking-wider text-[#8d8d97]">
-            <i className="bx bxs-guitar-amp mr-1" style={{ color: 'var(--acc)' }} />
-            riffs:
-          </span>
-          {RIFFS.map((r) => {
-            const isPlaying = playingRiffId === r.id;
-            const isSelected = selectedRiffId === r.id;
-            return (
+        {/* Selector de riffs conocidos + control de tempo BPM */}
+        <div className="mb-5 flex flex-col gap-3 border-y border-white/10 py-3.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="mr-1 font-mono text-[11px] uppercase tracking-wider text-[#8d8d97]">
+              <i className="bx bxs-guitar-amp mr-1" style={{ color: 'var(--acc)' }} />
+              riffs:
+            </span>
+            {RIFFS.map((r) => {
+              const isPlaying = playingRiffId === r.id;
+              const isSelected = selectedRiffId === r.id;
+              return (
+                <button
+                  key={r.id}
+                  type="button"
+                  onClick={() => (isPlaying ? stopRiff() : playRiff(r.id))}
+                  data-cursor="tocar"
+                  className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-mono text-[11.5px] transition-all"
+                  style={
+                    isPlaying
+                      ? { background: 'var(--acc)', borderColor: 'var(--acc)', color: '#000', fontWeight: 700 }
+                      : isSelected
+                      ? { borderColor: 'rgba(var(--acc-rgb), 0.6)', color: 'var(--fg)', background: 'rgba(var(--acc-rgb), 0.08)' }
+                      : { borderColor: 'var(--line)', color: 'var(--mute)' }
+                  }
+                >
+                  <i className={`bx ${isPlaying ? 'bx-stop-circle' : 'bx-play-circle'} text-sm`} />
+                  <span>{r.name}</span>
+                  <span className="opacity-60">· {r.artist}</span>
+                  <span className="opacity-55">{r.bpm}bpm</span>
+                  {r.origin === 'AR' && (
+                    <span
+                      className="rounded px-1 py-[1px] text-[9px] font-bold"
+                      style={
+                        isPlaying
+                          ? { background: 'rgba(0,0,0,0.2)', color: '#000' }
+                          : { background: 'rgba(92,225,255,0.16)', color: '#5ce1ff' }
+                      }
+                    >
+                      AR
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 font-mono text-[11.5px] text-[#8d8d97]">
+            <span className="inline-flex items-center gap-2">
+              <i
+                className="h-2 w-2 rounded-full transition-transform duration-100"
+                style={{
+                  background: playingRiffId ? 'var(--acc)' : 'rgba(255,255,255,0.2)',
+                  transform: playingRiffId && beatPulse ? 'scale(1.5)' : 'scale(1)',
+                  boxShadow: playingRiffId && beatPulse ? '0 0 10px var(--acc)' : 'none',
+                }}
+              />
+              TEMPO:
+              <b className="text-[#ecebe6]">{bpm} BPM</b>
+              {bpm === currentRiff.bpm && <span style={{ color: 'var(--acc)' }}>(original)</span>}
+            </span>
+            <input
+              type="range"
+              min="70"
+              max="185"
+              value={bpm}
+              aria-label="Ajustar tempo en BPM"
+              onChange={(e) => setBpm(Number(e.target.value))}
+              style={{ accentColor: 'var(--acc)' }}
+              className="h-1 w-36 cursor-pointer rounded-lg bg-white/15"
+            />
+            {bpm !== currentRiff.bpm && (
               <button
-                key={r.id}
                 type="button"
-                onClick={() => (isPlaying ? stopRiff() : playRiff(r.id))}
-                data-cursor="tocar"
-                className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-mono text-[11.5px] transition-all"
-                style={
-                  isPlaying
-                    ? { background: 'var(--acc)', borderColor: 'var(--acc)', color: '#000', fontWeight: 700 }
-                    : isSelected
-                    ? { borderColor: 'rgba(var(--acc-rgb), 0.6)', color: 'var(--fg)', background: 'rgba(var(--acc-rgb), 0.08)' }
-                    : { borderColor: 'var(--line)', color: 'var(--mute)' }
-                }
+                onClick={() => setBpm(currentRiff.bpm)}
+                className="rounded-full border border-white/15 px-2.5 py-0.5 text-[10.5px] text-[#ecebe6] transition-colors hover:border-[var(--acc)] hover:text-[var(--acc)]"
               >
-                <i className={`bx ${isPlaying ? 'bx-stop-circle' : 'bx-play-circle'} text-sm`} />
-                <span>{r.name}</span>
-                <span className="opacity-60">· {r.artist}</span>
-                {r.origin === 'AR' && (
-                  <span
-                    className="rounded px-1 py-[1px] text-[9px] font-bold"
-                    style={
-                      isPlaying
-                        ? { background: 'rgba(0,0,0,0.2)', color: '#000' }
-                        : { background: 'rgba(92,225,255,0.16)', color: '#5ce1ff' }
-                    }
-                  >
-                    AR
-                  </span>
-                )}
+                volver a {currentRiff.bpm} BPM
               </button>
-            );
-          })}
+            )}
+          </div>
         </div>
 
         {/* Teclado de 24 teclas */}

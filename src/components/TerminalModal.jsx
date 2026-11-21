@@ -171,7 +171,7 @@ wa ${link('https://wa.me/542664001759', '+54 266 400-1759')}`,
     },
     riffs: () =>
       `<span style="color:var(--acc)">riffs disponibles</span> (escribí <b>riff &lt;id&gt;</b>)\n` +
-      RIFFS.map((r) => `  <b>${r.id.padEnd(20)}</b> ${r.name} · ${r.artist} [${r.origin}]`).join('\n'),
+      RIFFS.map((r) => `  <b>${r.id.padEnd(20)}</b> ${r.name} · ${r.artist} [${r.origin} · ${r.bpm} BPM]`).join('\n'),
     riff: (a) => {
       const q = (a.join(' ') || '').toLowerCase();
       const found = q
