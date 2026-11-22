@@ -9,7 +9,7 @@ export default function Loader({ onDone }) {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced || sessionStorage.getItem('jm-booted')) {
+    if (reduced || sessionStorage.getItem('jm-booted') || window.location.hash) {
       setGone(true);
       onDone?.();
       return;

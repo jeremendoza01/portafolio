@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 220" width="1100" height="220">
+  <defs>
+    <style>
+      .mono { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .title { font-family: "Syne", "Segoe UI", system-ui, sans-serif; font-weight: 700; }
+      .flow { stroke-dasharray: 8 8; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -16; } }
+    </style>
+  </defs>
+
+  <rect width="1100" height="220" rx="18" fill="#0d0d11" stroke="rgba(255,255,255,0.1)"/>
+  <text x="28" y="34" class="mono" font-size="11" fill="#8d8d97" letter-spacing="1.4">
+    <tspan fill="#c8ff2e">●</tspan> WEB AUDIO API · CADENA DE SEÑAL EN TIEMPO REAL (SIN ARCHIVOS MP3)
+  </text>
+
+  <!-- Cables animados -->
+  <g fill="none" stroke="#c8ff2e" stroke-width="2" class="flow">
+    <line x1="205" y1="120" x2="245" y2="120"/>
+    <line x1="425" y1="120" x2="465" y2="120"/>
+    <line x1="645" y1="120" x2="685" y2="120"/>
+    <line x1="865" y1="120" x2="905" y2="120"/>
+  </g>
+
+  <!-- Pedal 1: Input -->
+  <g transform="translate(28, 62)">
+    <rect width="177" height="118" rx="14" fill="#14141b" stroke="rgba(200,255,46,0.45)"/>
+    <circle cx="156" cy="20" r="4" fill="#c8ff2e"/>
+    <text x="16" y="24" class="mono" font-size="10" fill="#c8ff2e">01 · INPUT</text>
+    <text x="16" y="54" class="title" font-size="17" fill="#ecebe6">6 Cuerdas / JM-24</text>
+    <text x="16" y="78" class="mono" font-size="10.5" fill="#8d8d97">Mouse · Teclado</text>
+    <text x="16" y="95" class="mono" font-size="10.5" fill="#8d8d97">7 Riffs @ BPM real</text>
+  </g>
+
+  <!-- Pedal 2: Síntesis -->
+  <g transform="translate(245, 62)">
+    <rect width="180" height="118" rx="14" fill="#14141b" stroke="rgba(92,225,255,0.45)"/>
+    <circle cx="159" cy="20" r="4" fill="#5ce1ff"/>
+    <text x="16" y="24" class="mono" font-size="10" fill="#5ce1ff">02 · SÍNTESIS</text>
+    <text x="16" y="54" class="title" font-size="17" fill="#ecebe6">Karplus-Strong</text>
+    <text x="16" y="78" class="mono" font-size="10.5" fill="#8d8d97">Cuerda física +</text>
+    <text x="16" y="95" class="mono" font-size="10.5" fill="#8d8d97">Dual-Osc Synth</text>
+  </g>
+
+  <!-- Pedal 3: Amp / Drive -->
+  <g transform="translate(465, 62)">
+    <rect width="180" height="118" rx="14" fill="#14141b" stroke="rgba(255,181,52,0.45)"/>
+    <circle cx="159" cy="20" r="4" fill="#ffb534"/>
+    <text x="16" y="24" class="mono" font-size="10" fill="#ffb534">03 · OVERDRIVE</text>
+    <text x="16" y="54" class="title" font-size="17" fill="#ecebe6">WaveShaper</text>
+    <text x="16" y="78" class="mono" font-size="10.5" fill="#8d8d97">Saturación cálida</text>
+    <text x="16" y="95" class="mono" font-size="10.5" fill="#8d8d97">Cab Filter 4.6 kHz</text>
+  </g>
+
+  <!-- Pedal 4: FX -->
+  <g transform="translate(685, 62)">
+    <rect width="180" height="118" rx="14" fill="#14141b" stroke="rgba(179,140,255,0.45)"/>
+    <circle cx="159" cy="20" r="4" fill="#b38cff"/>
+    <text x="16" y="24" class="mono" font-size="10" fill="#b38cff">04 · ESPACIO</text>
+    <text x="16" y="54" class="title" font-size="17" fill="#ecebe6">Delay + Comp</text>
+    <text x="16" y="78" class="mono" font-size="10.5" fill="#8d8d97">Echo 250ms · FB 22%</text>
+    <text x="16" y="95" class="mono" font-size="10.5" fill="#8d8d97">DynamicsCompressor</text>
+  </g>
+
+  <!-- Pedal 5: Output + Scope -->
+  <g transform="translate(905, 62)">
+    <rect width="167" height="118" rx="14" fill="#14141b" stroke="rgba(200,255,46,0.55)"/>
+    <circle cx="146" cy="20" r="4" fill="#c8ff2e"/>
+    <text x="16" y="24" class="mono" font-size="10" fill="#c8ff2e">05 · OUTPUT</text>
+    <text x="16" y="54" class="title" font-size="17" fill="#ecebe6">Scope LCD</text>
+    <path d="M16,84 Q34,68 52,84 T88,84 T124,84 T150,84" fill="none" stroke="#c8ff2e" stroke-width="2"/>
+    <text x="16" y="106" class="mono" font-size="10" fill="#8d8d97">FFT 1024 · Live</text>
+  </g>
+</svg>

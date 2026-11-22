@@ -141,6 +141,16 @@ export default function App() {
   }, [termOpen]);
 
   useEffect(() => {
+    if (window.location.hash) {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        setTimeout(() => {
+          document.documentElement.style.scrollBehavior = 'auto';
+          window.scrollTo(0, target.getBoundingClientRect().top + window.scrollY);
+          document.documentElement.style.scrollBehavior = '';
+        }, 120);
+      }
+    }
     console.log(
       '%c JM %c React + Tailwind + Rock Argentino. escribime: mjeremiasadriel@gmail.com ',
       'background:#c8ff2e;color:#000;font-weight:700;padding:4px 6px;border-radius:4px 0 0 4px',
