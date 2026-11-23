@@ -68,14 +68,17 @@ const HeroStrings = forwardRef(function HeroStrings({ accentRgb, onOpenTerminal 
 
   const strumChord = (forceSound = true) => {
     if (forceSound && !audioRig.enabled) audioRig.setEnabled(true);
-    const currentIdx = chordIdxRef.current;
-    setChordName(HERO_CHORDS[currentIdx].name);
+    let nextIdx = Math.floor(Math.random() * HERO_CHORDS.length);
+    if (HERO_CHORDS.length > 1 && nextIdx === chordIdxRef.current) {
+      nextIdx = (nextIdx + 1) % HERO_CHORDS.length;
+    }
+    chordIdxRef.current = nextIdx;
+    setChordName(HERO_CHORDS[nextIdx].name);
     [5, 4, 3, 2, 1, 0].forEach((idx, step) => {
       setTimeout(() => {
         pluckString(stringsRef.current[idx], 18, 0.36 + step * 0.05, forceSound || audioRig.enabled);
       }, step * 40);
     });
-    chordIdxRef.current = (currentIdx + 1) % HERO_CHORDS.length;
   };
 
   useImperativeHandle(ref, () => ({ strumChord }));
