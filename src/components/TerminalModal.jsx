@@ -123,13 +123,13 @@ Creo aplicaciones web con React, Tailwind CSS, Node.js y Express. Mi paso por el
   promedio: <b>7.21</b> sin aplazos · 5.94 con aplazos
 
 <span style="color:var(--acc)">Técnico Electromecánico</span> · Esc. Sec. Gdor. Elías Adre (2014–2020)`,
-    proyectos: () => `<span style="color:var(--acc)">P-01</span> Roja Directa ........ React · Context · Auth tokens · Mercado Pago
-<span style="color:var(--acc)">P-02</span> Simbiosis Geo ....... ${link('https://simbiosis-eta.vercel.app', 'demo')} · HTML/CSS/JS · GitHub Actions
-<span style="color:var(--acc)">P-03</span> Simulador Autómatas . ${link('https://github.com/jeremendoza01/Simulador-Automatas-UNViMe', 'código')} · C
-<span style="color:var(--acc)">P-04</span> To-Do List v5 + API . ${link('https://to-do-list-v5.vercel.app', 'demo')} · Express · REST
-<span style="color:var(--acc)">P-05</span> Sist. Trabajadores .. ${link('https://github.com/jeremendoza01/Sistema-de-Trabajadores', 'código')} · C
-<span style="color:var(--acc)">P-06</span> Perritos Aleatorios . ${link('https://perritosaleatorios.vercel.app', 'demo')} · Fetch API
-<span class="text-[#8d8d97]">+ ${repoCount} repos más en ${link('https://github.com/jeremendoza01', 'github')}</span>`,
+    proyectos: () => `<span style="color:var(--acc)">P-01</span> Task Tracker (To-Do v5) . ${link('https://github.com/jeremendoza01/To-Do-List-v5', 'repo')} · ${link('https://to-do-list-v5.vercel.app', 'demo')} · ${link('https://github.com/jeremendoza01/api', 'api')} · React + Supabase + Express
+<span style="color:var(--acc)">P-02</span> Simulador Autómatas ..... ${link('https://github.com/jeremendoza01/Simulador-Automatas-UNViMe', 'repo')} · ${link('https://github.com/jeremendoza01/TdC-TP3', 'TdC-TP3')} · C · LL(1) · Thompson · AFD
+<span style="color:var(--acc)">P-03</span> Simbiosis Geo ........... ${link('https://github.com/jeremendoza01/simbiosis', 'repo')} · ${link('https://simbiosis-eta.vercel.app', 'demo')} · HTML/CSS/JS · GitHub Actions
+<span style="color:var(--acc)">P-04</span> Algoritmos 100M (TP3) ... ${link('https://github.com/jeremendoza01/tp3', 'repo')} · ${link('https://tp3-one.vercel.app', 'demo')} · Python · AVL · Heap · Counting Sort
+<span style="color:var(--acc)">P-05</span> Sist. Trabajadores ...... ${link('https://github.com/jeremendoza01/Sistema-de-Trabajadores', 'repo')} · C · Structs
+<span style="color:var(--acc)">P-06</span> Perritos Aleatorios ..... ${link('https://github.com/jeremendoza01/perritosaleatorios', 'repo')} · ${link('https://perritosaleatorios.vercel.app', 'demo')} · Fetch API
+<span class="text-[#8d8d97]">+ ${repoCount} repos en ${link('https://github.com/jeremendoza01?tab=repositories', 'github.com/jeremendoza01?tab=repositories')}</span>`,
     skills: () => `{
   <span class="text-[#5ce1ff]">"lenguajes"</span>:  ["JavaScript", "TypeScript", "Python", "C", "Java", "HTML", "CSS"],
   <span class="text-[#5ce1ff]">"frameworks"</span>: ["React", "Tailwind CSS", "Node.js", "Express"],

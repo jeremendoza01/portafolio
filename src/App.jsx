@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { audioRig } from './audio/audioRig';
-import { ACCENTS, FALLBACK_REPOS, FEATURED_REPOS, GH_USER } from './data/portfolioData';
+import { ACCENTS, FALLBACK_REPOS, GH_USER, REPO_META } from './data/portfolioData';
 import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
 import Topbar from './components/Topbar';
@@ -99,15 +99,18 @@ export default function App() {
         if (!alive || !Array.isArray(data)) return;
         setRepoTotal(data.length);
         const mapped = data
-          .filter((r) => !r.fork && !FEATURED_REPOS.includes(r.name.toLowerCase()))
-          .map((r) => ({
-            name: r.name,
-            language: r.language,
-            date: (r.pushed_at || r.updated_at).slice(0, 7),
-            homepage: r.homepage,
-            description: r.description,
-            html_url: r.html_url,
-          }));
+          .filter((r) => !r.fork && r.name.toLowerCase() !== GH_USER.toLowerCase())
+          .map((r) => {
+            const meta = REPO_META[r.name] || {};
+            return {
+              name: r.name,
+              language: meta.language || r.language,
+              date: (r.pushed_at || r.updated_at || '').slice(0, 7),
+              homepage: meta.homepage || r.homepage || '',
+              description: meta.description || r.description || '',
+              html_url: r.html_url,
+            };
+          });
         setRepos(mapped);
       })
       .catch(() => {});
