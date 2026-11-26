@@ -84,16 +84,6 @@ Todo el sonido del portfolio se **sintetiza en el navegador desde cero** (cero a
 
 <img src="./docs/divider.svg" alt="" width="100%" />
 
-## ♫ Setlist interactivo JM-24
-
-Cada riff está transcripto con sus **figuras rítmicas reales en 4/4** y el **BPM de la grabación original**, con reloj corregido contra _drift_ (`performance.now()`) y slider en vivo (`70–185 BPM`) + reset al tempo original:
-
-<p align="center">
-  <img src="./docs/riffs-tempo.svg" alt="Gráfico comparativo de los 7 riffs y sus tempos BPM originales" width="100%" />
-</p>
-
-<img src="./docs/divider.svg" alt="" width="100%" />
-
 ## 💻 Terminal embebida
 
 Presioná <kbd>Ctrl</kbd> + <kbd>K</kbd> (o <kbd>~</kbd>) en cualquier parte del sitio para abrir la terminal:
