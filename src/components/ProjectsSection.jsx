@@ -165,7 +165,7 @@ export default function ProjectsSection({ repos, onToast }) {
 
       {/* Bento grid sincronizado con los repositorios reales de GitHub */}
       <div className="grid grid-cols-1 gap-[18px] md:grid-cols-2 lg:grid-cols-3">
-        {/* P-01 To-Do List v5 (Task Tracker) + API */}
+        {/* P-01 To-Do List v5 (Task Tracker) */}
         <TiltCard className="md:col-span-2">
           <div className="pvis-grid grid h-[230px] grid-cols-1 items-center gap-4 overflow-hidden border-b border-white/10 p-5 sm:grid-cols-[1.15fr_1fr] sm:p-6">
             <ul className="grid gap-2.5 font-mono text-[12.5px]">
@@ -173,7 +173,7 @@ export default function ProjectsSection({ repos, onToast }) {
                 'Proyectos → Épicas → Historias → Tareas',
                 'AuthProvider + rutas protegidas',
                 'Dashboard con KPIs en tiempo real',
-                'Persistencia Supabase + API Express',
+                'Persistencia en PostgreSQL (Supabase)',
               ].map((t, i) => (
                 <li
                   key={t}
@@ -191,9 +191,9 @@ export default function ProjectsSection({ repos, onToast }) {
             <div className="hidden gap-2 rounded-xl border border-white/10 bg-[#050507] p-3.5 font-mono text-[11.5px] sm:grid">
               {[
                 { m: 'GET', cls: 'text-[#5ce1ff]', path: '/my-projects/:epicId', code: '200' },
-                { m: 'POST', cls: 'text-[var(--acc)]', path: '/api/tasks', code: '201' },
-                { m: 'PUT', cls: 'text-[#ffd43b]', path: '/my-stories/:storyId', code: '200' },
-                { m: 'AUTH', cls: 'text-[#ff6b9d]', path: 'Supabase + JWT', code: 'OK' },
+                { m: 'POST', cls: 'text-[var(--acc)]', path: '/my-stories/:storyId', code: '201' },
+                { m: 'PUT', cls: 'text-[#ffd43b]', path: '/settings', code: '200' },
+                { m: 'AUTH', cls: 'text-[#ff6b9d]', path: 'Supabase PostgreSQL', code: 'OK' },
               ].map((r, i) => (
                 <span key={r.m} style={{ animationDelay: `${i}s` }} className="req-line flex items-center justify-between gap-2">
                   <span className="truncate">
@@ -225,10 +225,10 @@ export default function ProjectsSection({ repos, onToast }) {
               </a>
             </h3>
             <p className="text-[15px] text-[#8d8d97]">
-              Sistema de gestión de proyectos y tareas bajo estructura ágil jerárquica (Proyectos → Épicas → Historias de Usuario → Tareas), con autenticación, rutas protegidas, dashboard de KPIs en tiempo real, PostgreSQL (Supabase) y API REST en Express.
+              Sistema de gestión de proyectos y tareas bajo estructura ágil jerárquica (Proyectos → Épicas → Historias de Usuario → Tareas), con autenticación de usuarios, rutas protegidas, dashboard de KPIs en tiempo real y persistencia en base de datos relacional PostgreSQL (Supabase).
             </p>
             <ul className="mt-4 flex flex-wrap gap-1.5 font-mono text-[11px]">
-              {['React 18', 'Vite', 'React Router v6', 'Context API', 'Supabase / PostgreSQL', 'Node.js', 'Express', 'MongoDB + JWT'].map((t) => (
+              {['React 18', 'Vite 5', 'React Router v6', 'Context API', 'Custom Hooks', 'Supabase / PostgreSQL', 'CSS3'].map((t) => (
                 <li key={t} className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[#c4c4cb]">
                   {t}
                 </li>
@@ -247,12 +247,6 @@ export default function ProjectsSection({ repos, onToast }) {
                 icon="bx-link-external"
                 label="demo en vivo"
                 cursor="demo"
-              />
-              <ProjectLink
-                href="https://github.com/jeremendoza01/api"
-                icon="bxl-github"
-                label="api express"
-                cursor="api"
               />
             </div>
           </div>

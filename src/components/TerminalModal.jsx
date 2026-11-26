@@ -123,7 +123,7 @@ Creo aplicaciones web con React, Tailwind CSS, Node.js y Express. Mi paso por el
   promedio: <b>7.21</b> sin aplazos · 5.94 con aplazos
 
 <span style="color:var(--acc)">Técnico Electromecánico</span> · Esc. Sec. Gdor. Elías Adre (2014–2020)`,
-    proyectos: () => `<span style="color:var(--acc)">P-01</span> Task Tracker (To-Do v5) . ${link('https://github.com/jeremendoza01/To-Do-List-v5', 'repo')} · ${link('https://to-do-list-v5.vercel.app', 'demo')} · ${link('https://github.com/jeremendoza01/api', 'api')} · React + Supabase + Express
+    proyectos: () => `<span style="color:var(--acc)">P-01</span> Task Tracker (To-Do v5) . ${link('https://github.com/jeremendoza01/To-Do-List-v5', 'repo')} · ${link('https://to-do-list-v5.vercel.app', 'demo')} · React + Context API + Supabase PostgreSQL
 <span style="color:var(--acc)">P-02</span> Simulador Autómatas ..... ${link('https://github.com/jeremendoza01/Simulador-Automatas-UNViMe', 'repo')} · ${link('https://github.com/jeremendoza01/TdC-TP3', 'TdC-TP3')} · C · LL(1) · Thompson · AFD
 <span style="color:var(--acc)">P-03</span> Simbiosis Geo ........... ${link('https://github.com/jeremendoza01/simbiosis', 'repo')} · ${link('https://simbiosis-eta.vercel.app', 'demo')} · HTML/CSS/JS · GitHub Actions
 <span style="color:var(--acc)">P-04</span> Algoritmos 100M (TP3) ... ${link('https://github.com/jeremendoza01/tp3', 'repo')} · ${link('https://tp3-one.vercel.app', 'demo')} · Python · AVL · Heap · Counting Sort
