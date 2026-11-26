@@ -99,8 +99,8 @@ export default function TerminalModal({
   <b>github</b> · <b>linkedin</b>   abrir perfiles
   <b>ir</b> &lt;sección&gt;    navegar (inicio, sobre, proyectos, stack, academia, contacto)
   <b>acorde</b>          rasguear acorde en las cuerdas del inicio
-  <b>riffs</b>           listar los 7 riffs (rock argentino e internacional)
-  <b>riff</b> [nombre]   tocar un riff (ej: riff ji-ji-ji, riff soda, riff smoke)
+  <b>riffs</b>           listar los 4 riffs (rock argentino e internacional)
+  <b>riff</b> [nombre]   tocar un riff (ej: riff soda, riff smoke, riff nirvana)
   <b>tema</b>            cambiar color de acento
   <b>ls</b> · <b>cat</b> · <b>echo</b> · <b>date</b> · <b>history</b> · <b>clear</b> · <b>exit</b>`,
     whoami: () => `<b>Jeremías Adriel Mendoza</b>

@@ -23,13 +23,15 @@ export const TYPED_ROLES = [
   'enfocado en código limpio.',
 ];
 
-// Progresión "De Música Ligera" (Bm - G - D - A) + acordes abiertos
+// Acordes abiertos de guitarra con buen sustain y sonoridad rock/indie
 export const HERO_CHORDS = [
-  { name: 'Bm · De Música Ligera', freqs: [123.47, 123.47, 185.0, 246.94, 293.66, 369.99] },
-  { name: 'G · De Música Ligera', freqs: [98.0, 123.47, 146.83, 196.0, 246.94, 392.0] },
-  { name: 'D · De Música Ligera', freqs: [110.0, 146.83, 146.83, 220.0, 293.66, 369.99] },
-  { name: 'A · De Música Ligera', freqs: [110.0, 110.0, 164.81, 220.0, 277.18, 329.63] },
-  { name: 'Em9 · Rock Open', freqs: [82.41, 123.47, 164.81, 196.0, 246.94, 369.99] },
+  { name: 'Em9', freqs: [82.41, 123.47, 164.81, 196.0, 293.66, 369.99] },
+  { name: 'Asus2', freqs: [82.41, 110.0, 164.81, 220.0, 246.94, 329.63] },
+  { name: 'Cmaj9', freqs: [98.0, 130.81, 164.81, 196.0, 293.66, 329.63] },
+  { name: 'Gadd9', freqs: [98.0, 123.47, 146.83, 220.0, 293.66, 392.0] },
+  { name: 'Dsus2', freqs: [110.0, 146.83, 220.0, 293.66, 329.63, 440.0] },
+  { name: 'Am9', freqs: [110.0, 164.81, 220.0, 261.63, 329.63, 392.0] },
+  { name: 'Eadd9', freqs: [82.41, 123.47, 164.81, 207.65, 246.94, 369.99] },
 ];
 
 export const EXPERIENCE = [

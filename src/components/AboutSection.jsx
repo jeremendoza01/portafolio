@@ -32,10 +32,6 @@ const STATEMENT_WORDS = [
 
 export default function AboutSection({ repoTotal }) {
   const statementRef = useRef(null);
-  const stageRef = useRef(null);
-  const badgeRef = useRef(null);
-  const bandRef = useRef(null);
-  const stitchRef = useRef(null);
   const [litWords, setLitWords] = useState(0);
   const [imgFailed, setImgFailed] = useState(false);
 
@@ -54,177 +50,6 @@ export default function AboutSection({ repoTotal }) {
     update();
     window.addEventListener('scroll', update, { passive: true });
     return () => window.removeEventListener('scroll', update);
-  }, []);
-
-  // Física Verlet para la credencial colgante (Backstage Pass)
-  useEffect(() => {
-    const stage = stageRef.current;
-    const badge = badgeRef.current;
-    const band = bandRef.current;
-    const stitch = stitchRef.current;
-    if (!stage || !badge || !band || !stitch) return;
-
-    const N = 14;
-    let pts = [];
-    let seg = 10;
-    let anchor = { x: 0, y: 0 };
-    let W = 0;
-    let H = 0;
-    let bw = 280;
-    let bh = 440;
-    let dragging = false;
-    let target = { x: 0, y: 0 };
-    let grab = { x: 0, y: 0 };
-    let visible = true;
-
-    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-
-    const layout = () => {
-      W = stage.clientWidth;
-      H = stage.clientHeight;
-      bw = badge.offsetWidth;
-      bh = badge.offsetHeight;
-      anchor = { x: W / 2, y: -30 };
-      const len = clamp(H - bh - 50, 80, 210);
-      seg = len / N;
-      if (!pts.length) {
-        const ang = -0.25;
-        pts = Array.from({ length: N + 1 }, (_, i) => {
-          const x = anchor.x + Math.sin(ang) * seg * i;
-          const y = anchor.y + Math.cos(ang) * seg * i;
-          return { x, y, px: x, py: y };
-        });
-      }
-    };
-
-    const toLocal = (e) => {
-      const r = stage.getBoundingClientRect();
-      return { x: e.clientX - r.left, y: e.clientY - r.top };
-    };
-
-    const onDown = (e) => {
-      dragging = true;
-      badge.setPointerCapture(e.pointerId);
-      badge.style.cursor = 'grabbing';
-      const p = toLocal(e);
-      const last = pts[N];
-      grab = { x: p.x - last.x, y: p.y - last.y };
-      target = { x: last.x, y: last.y };
-    };
-    const onMove = (e) => {
-      if (!dragging) return;
-      const p = toLocal(e);
-      target = { x: p.x - grab.x, y: p.y - grab.y };
-    };
-    const release = () => {
-      dragging = false;
-      badge.style.cursor = 'grab';
-    };
-
-    badge.addEventListener('pointerdown', onDown);
-    badge.addEventListener('pointermove', onMove);
-    badge.addEventListener('pointerup', release);
-    badge.addEventListener('pointercancel', release);
-
-    const step = () => {
-      for (let i = 1; i <= N; i++) {
-        const p = pts[i];
-        const vx = (p.x - p.px) * 0.985;
-        const vy = (p.y - p.py) * 0.985;
-        p.px = p.x;
-        p.py = p.y;
-        p.x += vx;
-        p.y += vy + 0.55;
-      }
-      const last = pts[N];
-      if (dragging) {
-        last.x = target.x;
-        last.y = target.y;
-      }
-      for (let k = 0; k < 14; k++) {
-        pts[0].x = anchor.x;
-        pts[0].y = anchor.y;
-        for (let i = 0; i < N; i++) {
-          const a = pts[i];
-          const b = pts[i + 1];
-          const dx = b.x - a.x;
-          const dy = b.y - a.y;
-          const d = Math.hypot(dx, dy) || 0.0001;
-          const diff = (d - seg) / d;
-          if (i === 0) {
-            b.x -= dx * diff;
-            b.y -= dy * diff;
-          } else if (i + 1 === N) {
-            const wa = dragging ? 1 : 0.75;
-            const wb = 1 - wa;
-            a.x += dx * diff * wa;
-            a.y += dy * diff * wa;
-            b.x -= dx * diff * wb;
-            b.y -= dy * diff * wb;
-          } else {
-            a.x += dx * diff * 0.5;
-            a.y += dy * diff * 0.5;
-            b.x -= dx * diff * 0.5;
-            b.y -= dy * diff * 0.5;
-          }
-        }
-      }
-      last.x = clamp(last.x, bw * 0.5, Math.max(bw * 0.5, W - bw * 0.5));
-      last.y = clamp(last.y, 0, H - bh * 0.6);
-    };
-
-    const render = () => {
-      let d = `M${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)}`;
-      for (let i = 1; i < N; i++) {
-        const mx = (pts[i].x + pts[i + 1].x) / 2;
-        const my = (pts[i].y + pts[i + 1].y) / 2;
-        d += ` Q${pts[i].x.toFixed(1)},${pts[i].y.toFixed(1)} ${mx.toFixed(1)},${my.toFixed(1)}`;
-      }
-      d += ` L${pts[N].x.toFixed(1)},${pts[N].y.toFixed(1)}`;
-      band.setAttribute('d', d);
-      stitch.setAttribute('d', d);
-
-      const last = pts[N];
-      const ref = pts[N - 3];
-      const ang = Math.atan2(last.x - ref.x, last.y - ref.y);
-      const deg = clamp((-ang * 180) / Math.PI, -65, 65);
-      badge.style.transform = `translate(${(last.x - bw / 2).toFixed(1)}px, ${(last.y - 12).toFixed(1)}px) rotate(${deg.toFixed(2)}deg)`;
-      badge.style.setProperty('--holo', `${50 + deg * 2.2}%`);
-    };
-
-    layout();
-    step();
-    render();
-    window.addEventListener('resize', layout);
-    document.fonts?.ready.then(layout);
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        visible = entries[0]?.isIntersecting ?? true;
-      },
-      { rootMargin: '120px' }
-    );
-    io.observe(stage);
-
-    let raf;
-    const loop = () => {
-      if (visible) {
-        step();
-        render();
-      }
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      io.disconnect();
-      window.removeEventListener('resize', layout);
-      badge.removeEventListener('pointerdown', onDown);
-      badge.removeEventListener('pointermove', onMove);
-      badge.removeEventListener('pointerup', release);
-      badge.removeEventListener('pointercancel', release);
-    };
   }, []);
 
   return (
@@ -319,25 +144,15 @@ export default function AboutSection({ repoTotal }) {
           </div>
         </div>
 
-        {/* Credencial colgante Backstage Pass con física */}
-        <div
-          ref={stageRef}
-          className="relative order-first -mt-2 h-[540px] select-none lg:order-none lg:-mt-5 lg:h-[620px]"
-        >
-          <svg className="strap pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
-            <path ref={bandRef} className="band" />
-            <path ref={stitchRef} className="stitch" />
-          </svg>
+        {/* Credencial estática Dev Pass */}
+        <div className="order-first flex flex-col items-center justify-center select-none lg:order-none">
+          <div className="h-14 w-3.5 rounded-t-full border-x border-black/30" style={{ background: 'var(--acc)', boxShadow: '0 6px 14px rgba(0, 0, 0, .45)' }} aria-hidden="true" />
           <div
-            ref={badgeRef}
-            data-cursor="arrastrame"
             style={{
               background: 'linear-gradient(160deg, #1c1c24 0%, #121218 60%, #0e0e13 100%)',
               boxShadow: '0 30px 60px -10px rgba(0, 0, 0, .7), inset 0 1px 0 rgba(255, 255, 255, .08)',
-              transformOrigin: '50% 0',
-              touchAction: 'none',
             }}
-            className="absolute left-0 top-0 w-[280px] cursor-grab overflow-hidden rounded-[20px] border border-white/15 px-[22px] pb-5 pt-[26px] will-change-transform"
+            className="relative -mt-1.5 w-[280px] overflow-hidden rounded-[20px] border border-white/15 px-[22px] pb-5 pt-[26px]"
           >
             <span className="absolute left-1/2 top-[9px] -ml-[23px] h-[9px] w-[46px] rounded-full border border-white/15 bg-[#0a0a0c]" />
             <div className="badge-holo pointer-events-none absolute inset-0" />
@@ -387,9 +202,6 @@ export default function AboutSection({ repoTotal }) {
             </dl>
             <div className="badge-barcode mt-3.5 h-[34px] rounded opacity-85" />
           </div>
-          <span className="absolute inset-x-0 bottom-2.5 text-center font-mono text-[11px] text-[#8d8d97]">
-            ↑ arrastrá el pase
-          </span>
         </div>
       </div>
     </section>

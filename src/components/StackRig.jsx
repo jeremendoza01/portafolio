@@ -33,7 +33,7 @@ const StackRig = forwardRef(function StackRig({ accentRgb, onToast }, ref) {
   const [lcd, setLcd] = useState({
     cat: `guitarra · ${RIFFS[0].bpm} BPM original`,
     name: 'tocá una tecla o elegí un riff',
-    desc: '24 tecnologías · 7 riffs al tempo original de cada tema',
+    desc: '24 tecnologías · 4 riffs al tempo original de cada tema',
   });
 
   const demoTimerRef = useRef(null);
@@ -279,7 +279,7 @@ const StackRig = forwardRef(function StackRig({ accentRgb, onToast }, ref) {
           Stack
         </h2>
         <span className="w-full font-mono text-xs text-[#8d8d97] md:ml-auto md:w-auto">
-          instrumento · 24 herramientas · 7 riffs
+          instrumento · 24 herramientas · 4 riffs
         </span>
       </div>
 
